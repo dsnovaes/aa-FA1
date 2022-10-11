@@ -56,27 +56,16 @@ end
 
 
 def unvowel_first(str)
-    str.each_char.with_index { |char,i| return i if $vowels.include?(char) }
-    # if idx == 0
-    #     str
-    # else
-    #     str[0...idx] + str[idx...-1]
-    # end
-    false
+    vowels = []
+    str.each_char.with_index { |char,i| vowels << i if $vowels.include?(char) }
+    first_vowel = vowels[0]
+    return str if vowels.empty?
+    return str[0...first_vowel] + str[first_vowel+1..-1]
 end
 
 def slangify(sentence)
-    arr = sentence.split("")
-    result = []
-    arr.each do |word|
-        idx = unvowel_first(word)
-        if !idx
-            result << word
-        else
-            result << word[0...idx] + word[idx...-1]
-        end
-    end
-    result.join("")
+    arr = sentence.split(" ")
+    arr.map! { |ele| unvowel_first(ele) }.join(" ")
 end
 
 p slangify("follow the yellow brick road") # fllow th yllow brck rad
